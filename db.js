@@ -15,6 +15,9 @@ connection.connect((err) => {
         return console.log("Ошибка: " + err)
     } else {
         console.log("Подключенте кайф")
+        let timeoutJob = setInterval(async () => {
+            await connection.query("SELECT 1;")
+        }, 3600 * 1000 * 5)
     }
 })
 connection.on('error', async function (err) {
