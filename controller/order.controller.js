@@ -18,16 +18,16 @@ class OrderController {
             lastname = message[5][0];
             price = message[1].slice(0, -1)
 
-            await db.query(`INSERT INTO demo.wy5ja_messages_logs (logs, date) VALUES ('${req.body.message}', '${new Date()}')`)
+            await db.query(`INSERT INTO wy5ja_messages_logs (logs, date) VALUES ('${req.body.message}', '${new Date()}')`)
 
-            await db.query("SELECT w5jvou.virtuemart_order_id, order_total, order_status, w5jvou.first_name, w5jvou.last_name, w5jvou.middle_name from demo.wy5ja_virtuemart_orders inner join demo.wy5ja_virtuemart_order_userinfos w5jvou on" +
-                "    demo.wy5ja_virtuemart_orders.virtuemart_order_id = w5jvou.virtuemart_order_id WHERE order_status = 'P'" +
+            await db.query("SELECT w5jvou.virtuemart_order_id, order_total, order_status, w5jvou.first_name, w5jvou.last_name, w5jvou.middle_name from wy5ja_virtuemart_orders inner join wy5ja_virtuemart_order_userinfos w5jvou on" +
+                "    wy5ja_virtuemart_orders.virtuemart_order_id = w5jvou.virtuemart_order_id WHERE order_status = 'P'" +
                 "                                                                                    and w5jvou.first_name = ?" +
                 `                                                                                    and w5jvou.last_name LIKE '%${lastname}%'` +
                 "                                                                                    and w5jvou.middle_name = ?" +
                 "                                                                                    and order_total = ?", [firstname, patronimic, price], async (err, rows) => {
                 if (rows.length) {
-                    await db.query(`UPDATE demo.wy5ja_virtuemart_orders t SET t.order_status = 'C' WHERE t.virtuemart_order_id = ${rows[0].virtuemart_order_id}`)
+                    await db.query(`UPDATE wy5ja_virtuemart_orders t SET t.order_status = 'C' WHERE t.virtuemart_order_id = ${rows[0].virtuemart_order_id}`)
                 }
             })
         }
