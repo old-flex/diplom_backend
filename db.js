@@ -17,10 +17,12 @@ connection.connect((err) => {
         console.log("Подключенте кайф")
     }
 })
-connection.on('error', function (err) {
+connection.on('error', async function (err) {
     console.log('db error', err)
     console.log('reload')
     connection = mysql.createConnection(dbConfig);
+    await connection.query(`INSERT INTO j8693520_demo.wy5ja_messages_logs (logs, date) VALUES ('reloading', '${new Date()}')`)
+
 })
 
 // let test = "SELECT * FROM wy5ja_virtuemart_orders"

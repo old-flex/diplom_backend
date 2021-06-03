@@ -27,6 +27,7 @@ class OrderController {
                 "                                                                                    and w5jvou.middle_name = ?" +
                 "                                                                                    and order_total = ?", [firstname, patronimic, price], async (err, rows) => {
                 if (rows.length) {
+                    console.log(rows)
                     await db.query(`UPDATE j8693520_demo.wy5ja_virtuemart_orders t SET t.order_status = 'C' WHERE t.virtuemart_order_id = ${rows[0].virtuemart_order_id}`)
                 }
             })
