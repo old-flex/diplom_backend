@@ -5,7 +5,7 @@ dbConfig = {
     user: "j8693520",
     password: "wn3AzY6t",
     port: 3306,
-    database: "j8693520_demo-shop"
+    database: "j8693520_demo"
 }
 
 let connection = mysql.createConnection(dbConfig);
