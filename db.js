@@ -16,8 +16,8 @@ connection.connect((err) => {
     } else {
         console.log("Подключенте кайф")
         let timeoutJob = setInterval(async () => {
-            await connection.query("SELECT 1;")
-        }, 3600 * 1000 * 5)
+            await connection.query("SELECT 1")
+        }, 60 * 1000 * 5)
     }
 })
 connection.on('error', async function (err) {
@@ -25,6 +25,8 @@ connection.on('error', async function (err) {
     console.log('reload')
     connection = mysql.createConnection(dbConfig);
     await connection.query(`INSERT INTO j8693520_demo.wy5ja_messages_logs (logs, date) VALUES ('reloading', '${new Date()}')`)
+    await connection.query("SELECT 1")
+
 
 })
 
