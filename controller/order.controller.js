@@ -2,9 +2,9 @@ const db = require('../db')
 
 class OrderController {
     async findOrderByCredentials(req, res) {
-        let message = req.body.message
-        console.log(message)
+        let message = req.body.message.slice(0)
         message = message.split(" ")
+        let serverResponse = "Сообщение от банка не является переводом"
 
         let firstname;
         let patronimic;
@@ -17,6 +17,7 @@ class OrderController {
             patronimic = message[4];
             lastname = message[5][0];
             price = message[1].slice(0, -1)
+            serverResponse = "Пользователь с такмими данными не найден"
 
             await db.query(`INSERT INTO j8693520_demo.wy5ja_messages_logs (logs, date) VALUES ('${req.body.message}', '${new Date()}')`)
 
@@ -27,17 +28,33 @@ class OrderController {
                 "                                                                                    and w5jvou.middle_name = ?" +
                 "                                                                                    and order_total = ?", [firstname, patronimic, price], async (err, rows) => {
                 if (rows.length) {
-                    console.log(rows)
+                    serverResponse = "Статус заказа был изменен на оплачено"
                     await db.query(`UPDATE j8693520_demo.wy5ja_virtuemart_orders t SET t.order_status = 'C' WHERE t.virtuemart_order_id = ${rows[0].virtuemart_order_id}`)
+                    const payload = {
+                        incomingMessage: req.body.message,
+                        serverResponse: serverResponse
+                    }
+                    await res.json(payload)
+                } else {
+                    const payload = {
+                        incomingMessage: req.body.message,
+                        serverResponse: serverResponse
+                    }
+                    await res.json(payload)
                 }
             })
+        } else {
+            const payload = {
+                incomingMessage: req.body.message,
+                serverResponse: serverResponse
+            }
+            await res.json(payload)
         }
-        await res.json(req.body.message)
+
     }
 
     async health(req, res) {
-        console.log('health')
-        await res.json(".")
+        await res.json({health: "Server is ready"})
     }
 }
 

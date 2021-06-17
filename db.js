@@ -20,6 +20,7 @@ connection.connect((err) => {
         }, 60 * 1000 )
     }
 })
+
 connection.on('error', async function (err) {
     console.log('db error', err)
     console.log('reload')
